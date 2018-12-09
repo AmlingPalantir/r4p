@@ -28,7 +28,7 @@ sub finish
     my $this = shift;
     my $state = shift;
 
-    return $this->finish1([@{$state->[0]}]);
+    return $this->finish1($state->[0]);
 }
 
 1;

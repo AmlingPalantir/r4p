@@ -27,7 +27,7 @@ sub finish
     my $this = shift;
     my $state = shift;
 
-    return {%$state};
+    return $state;
 }
 
 sub names
