@@ -7,6 +7,7 @@ use Amling::R4P::Operation;
 use Amling::R4P::OutputStream::Subs;
 use Amling::R4P::Registry;
 use Amling::R4P::Utils;
+use Clone ('clone');
 
 use base ('Amling::R4P::Operation');
 
@@ -59,10 +60,14 @@ sub wrap_stream
 
     my $output_record = sub
     {
+        my $clone = shift;
+
         my $r = {};
         for my $tuple (@$states)
         {
             my ($name, $agg, $state) = @$tuple;
+
+            $state = clone($state) if($clone);
 
             Amling::R4P::Utils::set_path($r, $name, $agg->finish($state));
         }
@@ -81,11 +86,11 @@ sub wrap_stream
                 $agg->update($state, $r);
             }
 
-            $output_record->() if($incremental);
+            $output_record->(1) if($incremental);
         },
         'CLOSE' => sub
         {
-            $output_record->() unless($incremental);
+            $output_record->(0) unless($incremental);
             $os->close();
         },
     );
