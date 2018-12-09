@@ -3,7 +3,7 @@ package Amling::R4P::Clumper::Window;
 use strict;
 use warnings;
 
-use Amling::R4P::OutputStream::RefuseClose;
+use Amling::R4P::OrderedSubstreams;
 use Amling::R4P::OutputStream::Subs;
 use Clone ('clone');
 
@@ -36,7 +36,7 @@ sub wrap_stream
     my $size = $this->{'SIZE'};
     my $window = [];
 
-    my $os_no_close = Amling::R4P::OutputStream::RefuseClose->new($os);
+    my $ordered_streams = Amling::R4P::OrderedSubstreams->new($os);
 
     return Amling::R4P::OutputStream::Subs->new(
         'WRITE_RECORD' => sub
@@ -50,20 +50,21 @@ sub wrap_stream
             }
             if(@$window == $size)
             {
-                my $os = $bucket_wrapper->($os_no_close, []);
+                my $os1 = $ordered_streams->next();
+                $os1 = $bucket_wrapper->($os1, []);
                 for my $r (@$window)
                 {
                     # Ouch clone, but generally a record written to a stream
                     # should be considered lost and we may write to multiple
                     # streams.
-                    $os->write_record(clone($r));
+                    $os1->write_record(clone($r));
                 }
-                $os->close();
+                $os1->close();
             }
         },
         'CLOSE' => sub
         {
-            $os->close();
+            $ordered_streams->close();
         },
     );
 }
