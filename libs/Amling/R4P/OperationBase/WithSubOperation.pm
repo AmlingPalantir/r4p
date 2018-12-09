@@ -3,8 +3,10 @@ package Amling::R4P::OperationBase::WithSubOperation;
 use strict;
 use warnings;
 
-use Amling::R4P::Operation::Chain;
 use Amling::R4P::Operation;
+use Amling::R4P::OutputStream::Process;
+use Amling::R4P::Registry;
+use Amling::R4P::Utils;
 
 use base ('Amling::R4P::Operation');
 
@@ -27,7 +29,7 @@ sub options
     [
         [undef], undef, sub
         {
-            my ($wrapper, $files) = @{Amling::R4P::Operation::Chain::construct_stage_wrapper([@_])};
+            my ($wrapper, $files) = @{construct_wrapper([@_])};
 
             $this->{'WRAPPER'} = $wrapper;
             $this->extra_args($files);
@@ -54,5 +56,45 @@ sub wrap_sub_stream
 
     return $this->{'WRAPPER'}->($os, $fr);
 }
+
+sub construct_wrapper
+{
+    my $cmd = shift;
+
+    die 'Empty command?' unless(@$cmd);
+
+    if($cmd->[0] =~ /^r4p-(.*)$/)
+    {
+        my $op = Amling::R4P::Registry::find('Amling::R4P::Operation', $1);
+
+        my $args = [@$cmd];
+        shift @$args;
+        Amling::R4P::Utils::parse_options($op->options(), $args);
+        my $files = $op->validate();
+
+        my $wrapper = sub
+        {
+            my $os = shift;
+            my $fr = shift;
+
+            return $op->wrap_stream($os, $fr);
+        };
+
+        return [$wrapper, $files];
+    }
+
+    my $wrapper = sub
+    {
+        my $os = shift;
+        my $fr = shift;
+
+        my $pos = Amling::R4P::OutputStream::Process->new($cmd);
+        $fr->register($pos->pid(), $pos->in(), $os);
+        return $pos;
+    };
+    # subprocess stages always get STDIN
+    return [$wrapper, []];
+}
+
 
 1;
