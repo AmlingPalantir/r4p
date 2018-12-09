@@ -6,6 +6,7 @@ use warnings;
 use Amling::R4P::Operation;
 use Amling::R4P::OutputStream::Process;
 use Amling::R4P::Registry;
+use Amling::R4P::Utils;
 use Getopt::Long;
 
 use base ('Amling::R4P::Operation');
