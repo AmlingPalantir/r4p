@@ -6,11 +6,8 @@ use warnings;
 use Amling::R4P::Operation;
 use Amling::R4P::OutputStream::Subs;
 use Amling::R4P::Utils;
-use JSON;
 
 use base ('Amling::R4P::Operation');
-
-my $json = JSON->new();
 
 sub new
 {
@@ -82,14 +79,7 @@ sub wrap_stream
                         $v = Amling::R4P::Utils::get_path($r, $k);
                     }
 
-                    if(!defined($v))
-                    {
-                        $v = '';
-                    }
-                    if(ref($v) ne '')
-                    {
-                        $v = $json->encode($v);
-                    }
+                    $v = Amling::R4P::Utils::pretty_string($v);
 
                     push @$row, $v;
                     if(length($v) > $widths->[$i])

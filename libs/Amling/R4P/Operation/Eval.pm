@@ -4,11 +4,9 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation::Base::Eval;
-use JSON;
+use Amling::R4P::Utils;
 
 use base ('Amling::R4P::Operation::Base::Eval');
-
-my $json = JSON->new();
 
 sub on_value
 {
@@ -17,14 +15,7 @@ sub on_value
     my $v = shift;
     my $r = shift;
 
-    if(!defined($v))
-    {
-        $v = '';
-    }
-    if(ref($v) ne '')
-    {
-        $v = $json->encode($v);
-    }
+    $v = Amling::R4P::Utils::pretty_string($v);
 
     $os->write_line($v);
 }

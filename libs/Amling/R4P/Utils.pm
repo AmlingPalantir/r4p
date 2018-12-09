@@ -3,6 +3,10 @@ package Amling::R4P::Utils;
 use strict;
 use warnings;
 
+use JSON;
+
+my $json = JSON->new();
+
 sub _get_path_ptr
 {
     my $r = shift;
@@ -176,6 +180,20 @@ sub _convert_target
     }
 
     die 'Unexpected target?';
+}
+
+sub pretty_string
+{
+    my $v = shift;
+    if(!defined($v))
+    {
+        $v = '';
+    }
+    if(ref($v) ne '')
+    {
+        $v = $json->encode($v);
+    }
+    return $v;
 }
 
 1;
