@@ -46,7 +46,7 @@ sub validate
     my $code = $this->{'CODE'};
     die 'No code specified?' unless(defined($code));
 
-    $code =~ s/{{(.*?)}}/Amling::R4P::Utils::generate_path_ref($1)/ge;
+    $code =~ s/\{\{(.*?)\}\}/Amling::R4P::Utils::generate_path_ref($1)/ge;
 
     my $executor = $this->{'EXECUTOR'};
 

@@ -28,13 +28,13 @@ sub options
                 {
                     if(!@$args)
                     {
-                        push $cmds, [@cmd];
+                        push @$cmds, [@cmd];
                         last TOP;
                     }
                     my $arg = shift @$args;
                     if($arg eq '|')
                     {
-                        push $cmds, [@cmd];
+                        push @$cmds, [@cmd];
                         next TOP;
                     }
                     push @cmd, $arg;

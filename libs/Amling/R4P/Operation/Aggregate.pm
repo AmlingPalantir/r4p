@@ -53,7 +53,7 @@ sub wrap_stream
             $name =~ s@/@_@g;
         }
         my $agg = $spec->{'instance'};
-        push $states, [$name, $agg, $agg->initial()];
+        push @$states, [$name, $agg, $agg->initial()];
     }
     my $incremental = $this->{'INCREMENTAL'};
 

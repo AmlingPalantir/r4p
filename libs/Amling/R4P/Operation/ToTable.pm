@@ -91,7 +91,7 @@ sub wrap_stream
                         $v = $json->encode($v);
                     }
 
-                    push $row, $v;
+                    push @$row, $v;
                     if(length($v) > $widths->[$i])
                     {
                         $widths->[$i] = length($v);
