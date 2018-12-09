@@ -13,6 +13,11 @@ sub new
     my $os = shift;
 
     return $class->SUPER::new(
+        'WRITE_BOF' => sub
+        {
+            my $file = shift;
+            $os->write_bof($file);
+        },
         'WRITE_RECORD' => sub
         {
             my $r = shift;

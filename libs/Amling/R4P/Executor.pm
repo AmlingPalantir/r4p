@@ -23,11 +23,9 @@ sub options
 {
     my $this = shift;
 
-    my $uses = $this->{'USES'};
-
     return
     [
-        ['M'], 1, $uses,
+        ['M'], 1, $this->{'USES'},
     ];
 }
 
@@ -65,7 +63,7 @@ sub compile
 
     $code .= " $body;";
 
-    if($return)
+    if(defined($return))
     {
         $code .= " return \$$return;";
     }

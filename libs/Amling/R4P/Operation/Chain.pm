@@ -31,13 +31,13 @@ sub options
                         push $cmds, [@cmd];
                         last TOP;
                     }
-                    if($args->[0] eq '|')
+                    my $arg = shift @$args;
+                    if($arg eq '|')
                     {
                         push $cmds, [@cmd];
-                        shift @$args;
                         next TOP;
                     }
-                    push @cmd, shift @$args;
+                    push @cmd, $arg;
                 }
             }
 

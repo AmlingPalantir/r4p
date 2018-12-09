@@ -98,27 +98,18 @@ sub parse_options
 
         for my $alias (@$aliases)
         {
-            my $p;
             if(!defined($alias))
             {
                 push @$catchalls, $target;
                 next;
             }
 
-            if(length($alias) == 1)
+            my $arg = (length($alias) == 1 ? '-' : '--') . $alias;
+            if($captures->{$arg})
             {
-                $p = \$captures->{"-$alias"};
+                die "Two captures for $arg?";
             }
-            else
-            {
-                $p = \$captures->{"--$alias"};
-            }
-
-            if(defined($$p))
-            {
-                die "Two captures for $alias?";
-            }
-            $$p = $target;
+            $captures->{$arg} = $target;
         }
     }
 

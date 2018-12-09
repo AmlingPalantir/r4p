@@ -57,6 +57,8 @@ sub wrap_stream
             my $line = Amling::R4P::Utils::get_path($r1, $line_key);
 
             my $os1 = $ordered_streams->next();
+            # Note that we pass lines as-is (rather than trying to parse as
+            # JSON and joining).  Unclear if this is useful...
             $os1 = Amling::R4P::OutputStream::SubsTransform->new(
                 $os1,
                 'XFORM_RECORD' => sub

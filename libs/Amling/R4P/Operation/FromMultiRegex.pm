@@ -31,8 +31,7 @@ sub _parse_regex
     my $arg = shift;
 
     die 'Must specify keys.' unless($arg =~ /^([^=]*)=(.*)$/);
-    my $keys = $1;
-    my $re = $2;
+    my ($keys, $re) = ($1, $2);
 
     return ([split(/,/, $keys)], $re);
 }

@@ -47,7 +47,11 @@ sub wrap_stream
     for my $spec (@{$this->{'SPECS'}})
     {
         my $name = $spec->{'label'};
-        $name = $spec->{'arg'} if(!defined($name));
+        if(!defined($name))
+        {
+            $name = $spec->{'arg'};
+            $name =~ s@/@_@g;
+        }
         my $agg = $spec->{'instance'};
         push $states, [$name, $agg, $agg->initial()];
     }

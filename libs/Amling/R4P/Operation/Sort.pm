@@ -6,7 +6,6 @@ use warnings;
 use Amling::R4P::Operation;
 use Amling::R4P::OutputStream::Subs;
 use Amling::R4P::Registry;
-use Amling::R4P::Sorter::Internal::Reverse;
 use Amling::R4P::Sorter::Lexical;
 use Amling::R4P::Sorter::Numeric;
 
@@ -44,13 +43,9 @@ sub options
             {
                 for my $key (split(',', $_[0]))
                 {
-                    my $rev = 0;
-                    $rev = 1 if($key =~ s/^-//);
-                    my $sorter = $class->new($key);
-                    $sorter = Amling::R4P::Sorter::Internal::Reverse->new($sorter) if($rev);
                     push @$specs,
                     {
-                        'instance' => $sorter,
+                        'instance' => $class->new($key),
                     };
                 }
             },

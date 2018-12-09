@@ -43,7 +43,6 @@ sub write_line
     return $write_line->($line) if(defined($write_line));
 
     my $write_record = $this->{'WRITE_RECORD'};
-eval { $json->decode($line); }; use Carp; confess $@ if($@);
     return $write_record->($json->decode($line)) if(defined($write_record));
 
     die "No write impl?";

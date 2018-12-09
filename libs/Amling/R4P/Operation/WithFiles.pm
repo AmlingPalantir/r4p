@@ -60,6 +60,8 @@ sub wrap_stream
         return if($cur_os1);
 
         my $os1 = $ordered_streams->next();
+        # Note that we pass lines as-is (rather than trying to parse as JSON
+        # and stamping).  Unclear if this is useful...
         $os1 = Amling::R4P::OutputStream::SubsTransform->new(
             $os1,
             'XFORM_RECORD' => sub
