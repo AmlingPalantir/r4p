@@ -21,8 +21,17 @@ sub update1
 
     if(!@$state || $this->cmp($v, $state->[0]) > 0)
     {
-        @$state = ($v);
+        @$state = ($v, $this->extra_value($v, $r));
     }
+}
+
+sub extra_value
+{
+    my $this = shift;
+    my $v = shift;
+    my $r = shift;
+
+    return $v;
 }
 
 sub finish
@@ -30,7 +39,7 @@ sub finish
     my $this = shift;
     my $state = shift;
 
-    return $state->[0];
+    return $state->[1];
 }
 
 1;
