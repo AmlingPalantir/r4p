@@ -48,29 +48,28 @@ sub wrap_stream
     my $os = shift;
     my $bucket_wrapper = shift;
 
-    return _wrap($os, $this->{'SPECS'}, $bucket_wrapper, []);
+    return _wrap($os, $this->{'SPECS'}, 0, $bucket_wrapper, []);
 }
 
 sub _wrap
 {
     my $os = shift;
     my $specs = shift;
+    my $i = shift;
     my $bucket_wrapper = shift;
     my $bucket_pairs = shift;
 
-    if(!@$specs)
+    if($i == @$specs)
     {
         return $bucket_wrapper->($os, $bucket_pairs);
     }
 
-    my ($s0, @s1) = @$specs;
-
-    return $s0->{'instance'}->wrap_stream($os, sub
+    return $specs->[$i]->{'instance'}->wrap_stream($os, sub
     {
         my $os = shift;
         my $bucket_pairs0 = shift;
 
-        return _wrap($os, \@s1, $bucket_wrapper, [@$bucket_pairs, @$bucket_pairs0]);
+        return _wrap($os, $specs, $i + 1, $bucket_wrapper, [@$bucket_pairs, @$bucket_pairs0]);
     });
 }
 
