@@ -1,0 +1,84 @@
+#!/usr/bin/perl
+
+# Copyright (C) 2010   Keith Amling, keith.amling@gmail.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+$| = 1;
+
+use strict;
+use warnings;
+
+use FindBin ('$Script');
+use lib "$FindBin::RealBin/../libs";
+
+use Amling::R4P::Ferrier;
+use Amling::R4P::OutputStream::Console;
+use Amling::R4P::Registry;
+use Amling::R4P::Utils;
+
+$Script =~ /^r4p-(.*)/ || die "Unexpected invocation of r4p-main ($Script)?";
+my $op = Amling::R4P::Registry::find('Amling::R4P::Operation', $1);
+
+Amling::R4P::Utils::parse_options($op->options(), \@ARGV);
+my $files = $op->validate();
+
+my $fr = Amling::R4P::Ferrier->new();
+my $os = Amling::R4P::OutputStream::Console->new();
+$os = $op->wrap_stream($os, $fr);
+if(!@$files)
+{
+    $os->write_bof('-');
+    $fr->register(undef, \*STDIN, $os);
+}
+else
+{
+    my $reregister = sub
+    {
+        my $reregister = shift;
+
+        my $file = shift @$files;
+
+        if(!defined($file))
+        {
+            $os->close();
+            return;
+        }
+
+        $os->write_bof($file);
+        open(my $fh, '<', $file) || die "Could not open $file: $!";
+        my $os1 = Amling::R4P::OutputStream::Subs->new(
+            'WRITE_LINE' => sub
+            {
+                my $line = shift;
+
+                $os->write_line($line);
+            },
+            'WRITE_RECORD' => sub
+            {
+                my $r = shift;
+
+                $os->write_record($r);
+            },
+            'CLOSE' => sub
+            {
+                close($fh) || die "Could not open $file: $!";
+                $reregister->($reregister);
+            },
+        );
+        $fr->register(undef, $fh, $os1);
+    };
+    $reregister->($reregister);
+}
+$fr->ferry();

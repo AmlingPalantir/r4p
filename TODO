@@ -1,0 +1,8 @@
+to-ptable: --sort --x --y --v --p
+"max record" (as in general record sort) aggregator?
+exit code?
+    only really applicable to grep
+executor: -A / -B / -C, --pre / --post
+    err, --post implies some kind of ability to push more records
+help
+from-csv (once)
