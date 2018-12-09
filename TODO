@@ -8,4 +8,5 @@ exit code?
 executor: -A / -B / -C, --pre / --post
     err, --post implies some kind of ability to push more records
 help
+tests
 from-csv (once)
