@@ -1,4 +1,4 @@
-package Amling::R4P::AggregatorBase::TwoKey;
+package Amling::R4P::Aggregator::Base::TwoKey;
 
 use strict;
 use warnings;

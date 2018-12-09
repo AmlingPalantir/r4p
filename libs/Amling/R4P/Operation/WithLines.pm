@@ -3,7 +3,7 @@ package Amling::R4P::Operation::WithLines;
 use strict;
 use warnings;
 
-use Amling::R4P::OperationBase::WithSubOperation;
+use Amling::R4P::Operation::Base::WithSubOperation;
 use Amling::R4P::OrderedSubstreams;
 use Amling::R4P::OutputStream::Subs;
 use Amling::R4P::OutputStream::SubsTransform;
@@ -11,7 +11,7 @@ use Amling::R4P::TwoRecordUnion;
 use Amling::R4P::Utils;
 use Clone ('clone');
 
-use base ('Amling::R4P::OperationBase::WithSubOperation');
+use base ('Amling::R4P::Operation::Base::WithSubOperation');
 
 sub new
 {

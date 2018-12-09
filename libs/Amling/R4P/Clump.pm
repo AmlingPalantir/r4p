@@ -3,8 +3,8 @@ package Amling::R4P::Clump;
 use strict;
 use warnings;
 
-use Amling::R4P::Registry;
 use Amling::R4P::Clumper::Key;
+use Amling::R4P::Registry;
 
 sub new
 {

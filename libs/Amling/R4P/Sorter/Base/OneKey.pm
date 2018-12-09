@@ -1,4 +1,4 @@
-package Amling::R4P::SorterBase::OneKey;
+package Amling::R4P::Sorter::Base::OneKey;
 
 use strict;
 use warnings;

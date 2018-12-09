@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::Records;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::ZeroArg;
+use Amling::R4P::Aggregator::Base::ZeroArg;
 
-use base ('Amling::R4P::AggregatorBase::ZeroArg');
+use base ('Amling::R4P::Aggregator::Base::ZeroArg');
 
 sub initial
 {

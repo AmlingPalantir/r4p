@@ -3,9 +3,9 @@ package Amling::R4P::Operation::Grep;
 use strict;
 use warnings;
 
-use Amling::R4P::OperationBase::Eval;
+use Amling::R4P::Operation::Base::Eval;
 
-use base ('Amling::R4P::OperationBase::Eval');
+use base ('Amling::R4P::Operation::Base::Eval');
 
 sub new
 {

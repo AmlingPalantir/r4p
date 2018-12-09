@@ -1,11 +1,11 @@
-package Amling::R4P::AggregatorBase::Percentile;
+package Amling::R4P::Aggregator::Base::Percentile;
 
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::OneKey;
+use Amling::R4P::Aggregator::Base::OneKey;
 
-use base ('Amling::R4P::AggregatorBase::OneKey');
+use base ('Amling::R4P::Aggregator::Base::OneKey');
 
 sub new
 {

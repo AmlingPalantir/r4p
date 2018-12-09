@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::Array;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::OneKeyValues;
+use Amling::R4P::Aggregator::Base::OneKeyValues;
 
-use base ('Amling::R4P::AggregatorBase::OneKeyValues');
+use base ('Amling::R4P::Aggregator::Base::OneKeyValues');
 
 sub finish1
 {

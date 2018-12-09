@@ -4,8 +4,8 @@ use strict;
 use warnings;
 
 use Amling::R4P::Clump;
-use Amling::R4P::OutputStream::StampPaths;
 use Amling::R4P::Operation::Aggregate;
+use Amling::R4P::OutputStream::StampPaths;
 
 use base ('Amling::R4P::Operation::Aggregate');
 

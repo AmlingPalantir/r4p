@@ -4,10 +4,10 @@ use strict;
 use warnings;
 
 use Amling::R4P::Clump;
-use Amling::R4P::OperationBase::WithSubOperation;
+use Amling::R4P::Operation::Base::WithSubOperation;
 use Amling::R4P::OutputStream::StampPaths;
 
-use base ('Amling::R4P::OperationBase::WithSubOperation');
+use base ('Amling::R4P::Operation::Base::WithSubOperation');
 
 sub new
 {

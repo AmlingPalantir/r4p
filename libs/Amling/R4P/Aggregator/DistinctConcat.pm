@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::DistinctConcat;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::OneKeyDistinctValues;
+use Amling::R4P::Aggregator::Base::OneKeyDistinctValues;
 
-use base ('Amling::R4P::AggregatorBase::OneKeyDistinctValues');
+use base ('Amling::R4P::Aggregator::Base::OneKeyDistinctValues');
 
 sub new
 {

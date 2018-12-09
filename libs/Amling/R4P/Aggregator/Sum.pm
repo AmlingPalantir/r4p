@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::Sum;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::Ord2Univariate;
+use Amling::R4P::Aggregator::Base::Ord2Univariate;
 
-use base ('Amling::R4P::AggregatorBase::Ord2Univariate');
+use base ('Amling::R4P::Aggregator::Base::Ord2Univariate');
 
 sub finish1
 {

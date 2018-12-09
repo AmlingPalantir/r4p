@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::LinearRegression;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::Ord2Bivariate;
+use Amling::R4P::Aggregator::Base::Ord2Bivariate;
 
-use base ('Amling::R4P::AggregatorBase::Ord2Bivariate');
+use base ('Amling::R4P::Aggregator::Base::Ord2Bivariate');
 
 sub finish1
 {

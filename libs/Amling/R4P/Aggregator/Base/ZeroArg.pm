@@ -1,4 +1,4 @@
-package Amling::R4P::AggregatorBase::ZeroArg;
+package Amling::R4P::Aggregator::Base::ZeroArg;
 
 use strict;
 use warnings;

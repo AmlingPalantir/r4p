@@ -3,8 +3,8 @@ package Amling::R4P::Operation::Chain;
 use strict;
 use warnings;
 
+use Amling::R4P::Operation::Base::WithSubOperation;
 use Amling::R4P::Operation;
-use Amling::R4P::OperationBase::WithSubOperation;
 use Getopt::Long;
 
 use base ('Amling::R4P::Operation');
@@ -44,7 +44,7 @@ sub options
             my $files = undef;
             for my $cmd (@$cmds)
             {
-                my ($wrapper, $files1) = @{Amling::R4P::OperationBase::WithSubOperation::construct_wrapper($cmd)};
+                my ($wrapper, $files1) = @{Amling::R4P::Operation::Base::WithSubOperation::construct_wrapper($cmd)};
                 push @$wrappers, $wrapper;
                 if(!defined($files))
                 {

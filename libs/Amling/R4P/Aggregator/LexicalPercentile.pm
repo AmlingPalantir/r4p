@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::LexicalPercentile;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::Percentile;
+use Amling::R4P::Aggregator::Base::Percentile;
 
-use base ('Amling::R4P::AggregatorBase::Percentile');
+use base ('Amling::R4P::Aggregator::Base::Percentile');
 
 sub cmp
 {

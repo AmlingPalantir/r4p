@@ -1,4 +1,4 @@
-package Amling::R4P::OperationBase::WithSubOperation;
+package Amling::R4P::Operation::Base::WithSubOperation;
 
 use strict;
 use warnings;

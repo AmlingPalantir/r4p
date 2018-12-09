@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::Min;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::Max;
+use Amling::R4P::Aggregator::Base::Max;
 
-use base ('Amling::R4P::AggregatorBase::Max');
+use base ('Amling::R4P::Aggregator::Base::Max');
 
 sub cmp
 {

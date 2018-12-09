@@ -1,4 +1,4 @@
-package Amling::R4P::OperationBase::Eval;
+package Amling::R4P::Operation::Base::Eval;
 
 use strict;
 use warnings;

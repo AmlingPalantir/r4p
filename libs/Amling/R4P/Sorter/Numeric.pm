@@ -3,9 +3,9 @@ package Amling::R4P::Sorter::Numeric;
 use strict;
 use warnings;
 
-use Amling::R4P::SorterBase::OneKey;
+use Amling::R4P::Sorter::Base::OneKey;
 
-use base ('Amling::R4P::SorterBase::OneKey');
+use base ('Amling::R4P::Sorter::Base::OneKey');
 
 sub cmp1
 {

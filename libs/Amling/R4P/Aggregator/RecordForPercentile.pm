@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::RecordForPercentile;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::RecordForPercentile;
+use Amling::R4P::Aggregator::Base::RecordForPercentile;
 
-use base ('Amling::R4P::AggregatorBase::RecordForPercentile');
+use base ('Amling::R4P::Aggregator::Base::RecordForPercentile');
 
 sub cmp
 {

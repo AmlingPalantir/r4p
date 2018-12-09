@@ -3,9 +3,9 @@ package Amling::R4P::Deaggregator::Unhash;
 use strict;
 use warnings;
 
-use Amling::R4P::DeaggregatorBase::OneKey;
+use Amling::R4P::Deaggregator::Base::OneKey;
 
-use base ('Amling::R4P::DeaggregatorBase::OneKey');
+use base ('Amling::R4P::Deaggregator::Base::OneKey');
 
 sub new
 {

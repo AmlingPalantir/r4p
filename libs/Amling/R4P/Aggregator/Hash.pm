@@ -3,9 +3,9 @@ package Amling::R4P::Aggregator::Hash;
 use strict;
 use warnings;
 
-use Amling::R4P::AggregatorBase::TwoKey;
+use Amling::R4P::Aggregator::Base::TwoKey;
 
-use base ('Amling::R4P::AggregatorBase::TwoKey');
+use base ('Amling::R4P::Aggregator::Base::TwoKey');
 
 sub initial
 {
