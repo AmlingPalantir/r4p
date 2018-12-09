@@ -30,8 +30,18 @@ sub update1
     my $this = shift;
     my $state = shift;
     my $v = shift;
+    my $r = shift;
 
-    push @$state, $v;
+    push @$state, [$v, $this->extra_value($v, $r)];
+}
+
+sub extra_value
+{
+    my $this = shift;
+    my $v = shift;
+    my $r = shift;
+
+    return $v;
 }
 
 sub finish
@@ -39,16 +49,16 @@ sub finish
     my $this = shift;
     my $state = shift;
 
-    my @vals = @$state;
-    @vals = sort { $this->cmp($a, $b) } @vals;
+    my @pairs = @$state;
+    @pairs = sort { $this->cmp($a->[0], $b->[0]) } @pairs;
 
-    my $idx = int(scalar(@vals) * $this->{'PERC'} / 100);
-    if($idx == scalar(@vals))
+    my $idx = int(scalar(@pairs) * $this->{'PERC'} / 100);
+    if($idx == scalar(@pairs))
     {
         --$idx;
     }
 
-    return $vals[$idx];
+    return $pairs[$idx]->[1];
 }
 
 sub argct
