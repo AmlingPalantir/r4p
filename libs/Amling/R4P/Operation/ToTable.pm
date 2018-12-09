@@ -31,7 +31,7 @@ sub options
     [
         @{$this->SUPER::options()},
 
-        ['k', 'key'], 1, sub { push @{$this->{'KEYS'}}, split(/,/, $_[0]); },
+        [['k', 'key'], 1, sub { push @{$this->{'KEYS'}}, split(/,/, $_[0]); }],
     ];
 }
 

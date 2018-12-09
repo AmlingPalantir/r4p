@@ -68,7 +68,7 @@ sub options
 
     my $ret =
     [
-        $short_names, 1, sub
+        [$short_names, 1, sub
         {
             my $arg = shift;
 
@@ -84,7 +84,7 @@ sub options
             $spec->{'label'} = $label if($use_labels);
 
             push @$specs, $spec;
-        },
+        }],
     ];
 
     for my $pair (@{pairs($base)})
@@ -94,7 +94,7 @@ sub options
 
         push @$ret,
         (
-            [map { "$_-$name" } @$long_names], ($argct + ($use_labels ? 1 : 0)), sub
+            [[map { "$_-$name" } @$long_names], ($argct + ($use_labels ? 1 : 0)), sub
             {
                 my $label = undef;
                 $label = shift if($use_labels);
@@ -109,7 +109,7 @@ sub options
                 $spec->{'label'} = $label if($use_labels);
 
                 push @$specs, $spec;
-            },
+            }],
         );
     }
 

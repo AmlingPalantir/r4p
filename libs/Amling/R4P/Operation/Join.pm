@@ -34,16 +34,16 @@ sub options
 
     return
     [
-        [undef], 1, \$this->{'DB_FILE'},
+        [[undef], 1, \$this->{'DB_FILE'}],
 
         @{$this->SUPER::options()},
 
         @{$this->{'TRU'}->options()},
-        ['on'], 1, $this->{'PAIRS'},
-        ['inner'], 0, sub { $this->{'FILLS'} = [0, 0]; },
-        ['left'], 0, sub { $this->{'FILLS'} = [1, 0]; },
-        ['right'], 0, sub { $this->{'FILLS'} = [0, 1]; },
-        ['outer'], 0, sub { $this->{'FILLS'} = [1, 1]; },
+        [['on'], 1, $this->{'PAIRS'}],
+        [['inner'], 0, sub { $this->{'FILLS'} = [0, 0]; }],
+        [['left'], 0, sub { $this->{'FILLS'} = [1, 0]; }],
+        [['right'], 0, sub { $this->{'FILLS'} = [0, 1]; }],
+        [['outer'], 0, sub { $this->{'FILLS'} = [1, 1]; }],
     ];
 }
 

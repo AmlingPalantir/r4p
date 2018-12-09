@@ -29,13 +29,13 @@ sub options
 
     return
     [
-        [undef], 1, \$this->{'CODE'},
+        [[undef], 1, \$this->{'CODE'}],
 
         @{$this->SUPER::options()},
 
         @{$this->{'EXECUTOR'}->options()},
 
-        ['separate'], 0, \$this->{'SEPARATE'},
+        [['separate'], 0, \$this->{'SEPARATE'}],
     ];
 }
 

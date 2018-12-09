@@ -46,14 +46,14 @@ sub options
     [
         @{$this->SUPER::options()},
 
-        ['re'], 1, sub { push @$tuples, [0, 0, _parse_regex($_[0])]; },
-        ['pre'], 1, sub { push @$tuples, [1, 0, _parse_regex($_[0])]; },
-        ['post'], 1, sub { push @$tuples, [0, 1, _parse_regex($_[0])]; },
+        [['re'], 1, sub { push @$tuples, [0, 0, _parse_regex($_[0])]; }],
+        [['pre'], 1, sub { push @$tuples, [1, 0, _parse_regex($_[0])]; }],
+        [['post'], 1, sub { push @$tuples, [0, 1, _parse_regex($_[0])]; }],
 
-        ['keep'], 1, sub { $this->{'KEEP'}->{$_} = 1 for(split(/,/, $_[0])); },
-        ['keep-all'], 0, \$this->{'KEEP_ALL'},
+        [['keep'], 1, sub { $this->{'KEEP'}->{$_} = 1 for(split(/,/, $_[0])); }],
+        [['keep-all'], 0, \$this->{'KEEP_ALL'}],
 
-        ['clobber'], 0, \$this->{'CLOBBER'},
+        [['clobber'], 0, \$this->{'CLOBBER'}],
     ];
 }
 

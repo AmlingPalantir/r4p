@@ -29,9 +29,9 @@ sub options
     [
         @{$this->SUPER::options()},
 
-        ['k', 'key'], 1, sub { push @{$this->{'KEYS'}}, split(',', $_[0]); },
-        ['re', 'regex'], 1, \$this->{'REGEX'},
-        ['d', 'delim'], 1, sub { my $d = '' . $_[0]; $this->{'REGEX'} = qr/\Q$d\E/; },
+        [['k', 'key'], 1, sub { push @{$this->{'KEYS'}}, split(',', $_[0]); }],
+        [['re', 'regex'], 1, \$this->{'REGEX'}],
+        [['d', 'delim'], 1, sub { my $d = '' . $_[0]; $this->{'REGEX'} = qr/\Q$d\E/; }],
     ];
 }
 

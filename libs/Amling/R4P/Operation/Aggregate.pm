@@ -33,7 +33,7 @@ sub options
         @{$this->SUPER::options()},
 
         @{Amling::R4P::Registry::options('Amling::R4P::Aggregator', ['a', 'aggregator'], ['agg'], 1, $specs)},
-        ['incremental'], 0, \$this->{'INCREMENTAL'},
+        [['incremental'], 0, \$this->{'INCREMENTAL'}],
     ];
 }
 

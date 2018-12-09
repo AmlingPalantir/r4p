@@ -26,8 +26,8 @@ sub options
 
     return
     [
-        ['lp', 'left-prefix'], 1, \$this->{'LEFT_PREFIX'},
-        ['rp', 'right-prefix'], 1, \$this->{'RIGHT_PREFIX'},
+        [['lp', 'left-prefix'], 1, \$this->{'LEFT_PREFIX'}],
+        [['rp', 'right-prefix'], 1, \$this->{'RIGHT_PREFIX'}],
     ];
 }
 

@@ -29,8 +29,8 @@ sub options
     [
         @{$this->SUPER::options()},
 
-        ['k', 'key'], 1, sub { push @{$this->{'KEYS'}}, split(',', $_[0]); },
-        ['re', 'regex'], 1, => \$this->{'REGEX'},
+        [['k', 'key'], 1, sub { push @{$this->{'KEYS'}}, split(',', $_[0]); }],
+        [['re', 'regex'], 1, \$this->{'REGEX'}],
     ];
 }
 

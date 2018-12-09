@@ -26,7 +26,7 @@ sub options
     [
         @{$this->SUPER::options()},
 
-        ['v'], 0, \$this->{'INVERT'},
+        [['v'], 0, \$this->{'INVERT'}],
     ];
 }
 

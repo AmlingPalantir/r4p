@@ -25,7 +25,7 @@ sub options
 
     return
     [
-        ['M'], 1, $this->{'USES'},
+        [['M'], 1, $this->{'USES'}],
     ];
 }
 

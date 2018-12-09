@@ -90,11 +90,10 @@ sub parse_options
     my $captures = {};
     my $catchalls = [];
 
-    for(my $i = 0; $i < @$options; $i += 3)
+    for my $tuple (@$options)
     {
-        my $aliases = $options->[$i];
-        my $count = $options->[$i + 1];
-        my $target = [$count, _convert_target($count, $options->[$i + 2])];
+        my ($aliases, $count, $target) = @$tuple;
+        $target = [$count, _convert_target($count, $target)];
 
         for my $alias (@$aliases)
         {

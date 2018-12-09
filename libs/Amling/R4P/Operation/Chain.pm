@@ -15,7 +15,7 @@ sub options
 
     return
     [
-        [undef], undef, sub
+        [[undef], undef, sub
         {
             my $args = [@_];
 
@@ -58,7 +58,7 @@ sub options
 
             $this->{'WRAPPERS'} = $wrappers;
             $this->extra_args($files);
-        },
+        }],
 
         @{$this->SUPER::options()},
     ];

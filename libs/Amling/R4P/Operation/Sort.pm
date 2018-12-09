@@ -39,7 +39,7 @@ sub options
     {
         push @$ret,
         (
-            $class->names(), 1, sub
+            [$class->names(), 1, sub
             {
                 for my $key (split(',', $_[0]))
                 {
@@ -48,7 +48,7 @@ sub options
                         'instance' => $class->new($key),
                     };
                 }
-            },
+            }],
         );
     }
 

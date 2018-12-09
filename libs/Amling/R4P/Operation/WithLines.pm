@@ -34,7 +34,7 @@ sub options
         @{$this->SUPER::options()},
 
         @{$this->{'TRU'}->options()},
-        ['lk', 'line-key'], 1, \$this->{'LINE_KEY'},
+        [['lk', 'line-key'], 1, \$this->{'LINE_KEY'}],
     ];
 }
 

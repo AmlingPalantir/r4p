@@ -30,7 +30,7 @@ sub options
     [
         @{$this->SUPER::options()},
 
-        ['fk', 'file-key'], 1, \$this->{'FILE_KEY'},
+        [['fk', 'file-key'], 1, \$this->{'FILE_KEY'}],
     ];
 }
 

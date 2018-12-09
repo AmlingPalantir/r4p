@@ -29,9 +29,9 @@ sub options
     [
         @{$this->SUPER::options()},
 
-        ['lk', 'line-key'], 1, \$this->{'LINE_KEY'},
-        ['lnk', 'lineno-key'], 1, \$this->{'LINENO_KEY'},
-        ['fk', 'file-key'], 1, \$this->{'FILE_KEY'},
+        [['lk', 'line-key'], 1, \$this->{'LINE_KEY'}],
+        [['lnk', 'lineno-key'], 1, \$this->{'LINENO_KEY'}],
+        [['fk', 'file-key'], 1, \$this->{'FILE_KEY'}],
     ];
 }
 

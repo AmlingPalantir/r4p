@@ -29,7 +29,7 @@ sub options
     return
     [
         @{Amling::R4P::Registry::options('Amling::R4P::Clumper', ['c', 'clumper'], ['cl'], 0, $specs)},
-        ['k', 'key'], 1, sub
+        [['k', 'key'], 1, sub
         {
             for my $key (split(/,/, $_[0]))
             {
@@ -38,7 +38,7 @@ sub options
                     'instance' => Amling::R4P::Clumper::Key->new($key),
                 };
             }
-        },
+        }],
     ];
 }
 

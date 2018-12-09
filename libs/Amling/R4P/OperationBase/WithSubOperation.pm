@@ -27,13 +27,13 @@ sub options
 
     return
     [
-        [undef], undef, sub
+        [[undef], undef, sub
         {
             my ($wrapper, $files) = @{construct_wrapper([@_])};
 
             $this->{'WRAPPER'} = $wrapper;
             $this->extra_args($files);
-        },
+        }],
 
         @{$this->SUPER::options()},
     ];

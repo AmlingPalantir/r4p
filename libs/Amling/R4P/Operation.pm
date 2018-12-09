@@ -23,7 +23,7 @@ sub options
 
     return
     [
-        [undef], 1, sub { $this->extra_args([@_]); }
+        [[undef], 1, sub { $this->extra_args([@_]); }],
     ];
 }
 
