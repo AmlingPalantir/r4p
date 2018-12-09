@@ -65,8 +65,10 @@ sub wrap_stream
                 }
             }
 
-            my $widths = [map { length($_) } @$keys];
             my $rows = [];
+
+            push @$rows, [map { [$_, ' '] } @$keys];
+            push @$rows, [map { ['', '-'] } @$keys];
             for my $r (@$rs)
             {
                 my $row = [];
@@ -81,13 +83,22 @@ sub wrap_stream
 
                     $v = Amling::R4P::Utils::pretty_string($v);
 
-                    push @$row, $v;
+                    push @$row, [$v, ' '];
+                }
+                push @$rows, $row;
+            }
+
+            my $widths = [map { length($_) } @$keys];
+            for my $row (@$rows)
+            {
+                for(my $i = 0; $i < @$keys; ++$i)
+                {
+                    my $v = $row->[$i]->[0];
                     if(length($v) > $widths->[$i])
                     {
                         $widths->[$i] = length($v);
                     }
                 }
-                push @$rows, $row;
             }
 
             my $pad = sub
@@ -99,32 +110,6 @@ sub wrap_stream
                 return ($v . ($p x ($w - length($v))));
             };
 
-            {
-                my @line;
-                for(my $i = 0; $i < @$keys; ++$i)
-                {
-                    if($i > 0)
-                    {
-                        push @line, '   ';
-                    }
-                    push @line, $pad->($keys->[$i], $widths->[$i], ' ');
-                }
-                $os->write_line(join('', @line));
-            }
-
-            {
-                my @line;
-                for(my $i = 0; $i < @$keys; ++$i)
-                {
-                    if($i > 0)
-                    {
-                        push @line, '   ';
-                    }
-                    push @line, $pad->('', $widths->[$i], '-');
-                }
-                $os->write_line(join('', @line));
-            }
-
             for my $row (@$rows)
             {
                 my @line;
@@ -134,7 +119,8 @@ sub wrap_stream
                     {
                         push @line, '   ';
                     }
-                    push @line, $pad->($row->[$i], $widths->[$i], ' ');
+                    my ($v, $padc) = @{$row->[$i]};
+                    push @line, $pad->($v, $widths->[$i], $padc);
                 }
                 $os->write_line(join('', @line));
             }
