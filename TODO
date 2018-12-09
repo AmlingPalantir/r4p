@@ -3,6 +3,7 @@ canonical output order?
 to-ptable: --sort --x --y --v --p
 "max record" (as in general record sort) aggregator?
     r4p-sort having a head/tail option (efficiently implemented) would let us hack this up with multiplex+sort
+    or just separate head/tail operation?
 exit code?
     only really applicable to grep
 executor: -A / -B / -C, --pre / --post
