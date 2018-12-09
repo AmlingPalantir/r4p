@@ -1,3 +1,5 @@
+canonical output order?
+    several distinct JSON objects and no obvious way to pass down flag from r4p-main
 to-ptable: --sort --x --y --v --p
 "max record" (as in general record sort) aggregator?
 exit code?
