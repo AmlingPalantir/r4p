@@ -77,12 +77,17 @@ sub ferry
             }
 
             $buf .= $chunk;
+            my $start = 0;
             while(1)
             {
-                my $i = index($buf, "\n");
-                last if($i == -1);
-                $out->write_line(substr($buf, 0, $i));
-                $buf = substr($buf, $i + 1);
+                my $i = index($buf, "\n", $start);
+                if($i == -1)
+                {
+                    $buf = substr($buf, $start);
+                    last;
+                }
+                $out->write_line(substr($buf, $start, ($i - $start)));
+                $start = $i + 1;
             }
             push @$reads, [$pid, $in, $out, $buf];
         }
