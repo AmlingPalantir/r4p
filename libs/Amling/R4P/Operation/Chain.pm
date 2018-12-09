@@ -5,7 +5,6 @@ use warnings;
 
 use Amling::R4P::Operation::Base::WithSubOperation;
 use Amling::R4P::Operation;
-use Getopt::Long;
 
 use base ('Amling::R4P::Operation');
 
