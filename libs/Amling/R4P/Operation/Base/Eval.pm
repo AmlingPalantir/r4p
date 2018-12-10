@@ -68,25 +68,10 @@ sub validate
 
     my $executor = $this->{'EXECUTOR'};
 
-    my $input_variable;
-    my $input = $this->{'INPUT'};
-    if($input eq 'LINES')
-    {
-        $input_variable = 'line';
-    }
-    elsif($input eq 'RECORDS')
-    {
-        $input_variable = 'r';
-    }
-    else
-    {
-        die;
-    }
-
     my $sub_supplier = sub
     {
         my $pkg = $executor->make_pkg();
-        return $executor->compile($pkg, [$input_variable], $code, ($this->{'RETURN'} ? $input_variable : undef));
+        return $executor->compile($pkg, ['r'], $code, ($this->{'RETURN'} ? 'r' : undef));
     };
     if($this->{'SEPARATE'})
     {
