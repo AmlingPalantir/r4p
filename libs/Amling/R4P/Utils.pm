@@ -107,12 +107,11 @@ sub parse_options
                 next;
             }
 
-            my $arg = (length($alias) == 1 ? '-' : '--') . $alias;
-            if($captures->{$arg})
+            if($captures->{$alias})
             {
-                die "Two captures for $arg?";
+                die "Two captures for $alias?";
             }
-            $captures->{$arg} = $target;
+            $captures->{$alias} = $target;
         }
     }
 
@@ -130,10 +129,11 @@ sub parse_options
         }
 
         my $target;
-        if(!$force_catchall && $arg =~ /^-/)
+        if(!$force_catchall && $arg =~ /^-+(.*)$/)
         {
+            my $alias = $1;
             shift @$args;
-            $target = $captures->{$arg};
+            $target = $captures->{$alias};
         }
         else
         {
