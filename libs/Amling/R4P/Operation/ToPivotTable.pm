@@ -112,8 +112,13 @@ sub _generate_table
         }
     }
 
-    my $x_header_tree = _build_header_tree([map { $_->[0] } @$cell_tuples], scalar(@$x_keys));
-    my $y_header_tree = _build_header_tree([map { $_->[1] } @$cell_tuples], scalar(@$y_keys));
+    my $x_header_tree;
+    my $y_header_tree;
+    for my $tuple ([\$x_header_tree, 0, $x_keys], [\$y_header_tree, 1, $y_keys])
+    {
+        my ($pz_header_tree, $tuple_index, $z_keys) = @$tuple;
+        $$pz_header_tree = _build_header_tree([map { $_->[$tuple_index] } @$cell_tuples], scalar(@$z_keys));
+    }
 
     my $width = scalar(@$y_keys) + 1 + $x_header_tree->[4];
     my $height = scalar(@$x_keys) + 1 + $y_header_tree->[4];
