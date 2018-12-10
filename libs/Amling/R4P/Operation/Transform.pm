@@ -8,30 +8,17 @@ use JSON;
 
 use base ('Amling::R4P::Operation::Base::Eval');
 
-my $json = JSON->new();
-
-sub on_value
+sub new
 {
-    my $this = shift;
-    my $os = shift;
-    my $v = shift;
-    my $r = shift;
+    my $class = shift;
 
-    if(UNIVERSAL::isa($v, 'ARRAY'))
-    {
-        for my $r1 (@$v)
-        {
-            $os->write_record($r1);
-        }
-        return;
-    }
+    my $this = $class->SUPER::new(
+        'INPUT' => 'RECORDS',
+        'RETURN' => 'r',
+        'OUTPUT' => 'RECORDS',
+    );
 
-    $os->write_record($v);
-}
-
-sub return
-{
-    return 'r';
+    return $this;
 }
 
 sub names

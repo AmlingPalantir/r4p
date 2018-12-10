@@ -11,42 +11,13 @@ sub new
 {
     my $class = shift;
 
-    my $this = $class->SUPER::new();
-
-    $this->{'INVERT'} = 0;
+    my $this = $class->SUPER::new(
+        'INPUT' => 'RECORDS',
+        'RETURN' => undef,
+        'OUTPUT' => 'GREP',
+    );
 
     return $this;
-}
-
-sub options
-{
-    my $this = shift;
-
-    return
-    [
-        @{$this->SUPER::options()},
-
-        [['v'], 0, \$this->{'INVERT'}],
-    ];
-}
-
-sub on_value
-{
-    my $this = shift;
-    my $os = shift;
-    my $v = shift;
-    my $r = shift;
-
-    if($this->{'INVERT'})
-    {
-        return if($v);
-    }
-    else
-    {
-        return unless($v);
-    }
-
-    $os->write_record($r);
 }
 
 sub names

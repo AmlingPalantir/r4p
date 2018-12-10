@@ -8,16 +8,17 @@ use Amling::R4P::Utils;
 
 use base ('Amling::R4P::Operation::Base::Eval');
 
-sub on_value
+sub new
 {
-    my $this = shift;
-    my $os = shift;
-    my $v = shift;
-    my $r = shift;
+    my $class = shift;
 
-    $v = Amling::R4P::Utils::pretty_string($v);
+    my $this = $class->SUPER::new(
+        'INPUT' => 'RECORDS',
+        'RETURN' => undef,
+        'OUTPUT' => 'LINES',
+    );
 
-    $os->write_line($v);
+    return $this;
 }
 
 sub names
