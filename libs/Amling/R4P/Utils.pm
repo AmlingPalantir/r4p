@@ -117,13 +117,23 @@ sub parse_options
     }
 
     $args = [@$args];
+    my $force_catchall = 0;
     while(@$args)
     {
         my $arg = $args->[0];
-        my $target = $captures->{$arg};
-        if(defined($target))
+
+        if(!$force_catchall && $arg eq '--')
         {
             shift @$args;
+            $force_catchall = 1;
+            next;
+        }
+
+        my $target;
+        if(!$force_catchall && $arg =~ /^-/)
+        {
+            shift @$args;
+            $target = $captures->{$arg};
         }
         else
         {
@@ -135,12 +145,9 @@ sub parse_options
                     last;
                 }
             }
-            if(!defined($target))
-            {
-                die "Unknown option: $arg";
-            }
         }
 
+        die "Unknown option at $arg" unless(defined($target));
         die "Unexpected repeat at $arg" unless($target->[0]);
 
         my $argct = $target->[1];

@@ -9,7 +9,3 @@ executor: -A / -B / -C, --pre / --post
 help
 tests
 from-csv (once)
-
-catchall file option isn't repeatable (oops)
--- in options
-shouldn't pass dash arg to catchall (without --)
