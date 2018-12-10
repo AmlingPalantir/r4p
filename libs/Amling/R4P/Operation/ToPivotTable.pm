@@ -17,6 +17,8 @@ sub new
     $this->{'Y_KEYS'} = [];
     $this->{'PINS'} = {};
     $this->{'V_KEYS'} = [];
+    $this->{'X_SORTS'} = [];
+    $this->{'Y_SORTS'} = [];
 
     return $this;
 }
@@ -33,6 +35,9 @@ sub options
         [['y'], 1, $this->{'Y_KEYS'}],
         [['p'], 2, $this->{'PINS'}],
         [['v'], 1, $this->{'V_KEYS'}],
+
+        @{Amling::R4P::Registry::options('Amling::R4P::Sorter', ['xs', 'x-sorter'], [], 0, $this->{'X_SORTS'})},
+        @{Amling::R4P::Registry::options('Amling::R4P::Sorter', ['ys', 'y-sorter'], [], 0, $this->{'Y_SORTS'})},
     ];
 }
 
@@ -114,10 +119,46 @@ sub _generate_table
 
     my $x_header_tree;
     my $y_header_tree;
-    for my $tuple ([\$x_header_tree, 0, $x_keys], [\$y_header_tree, 1, $y_keys])
+    for my $tuple ([\$x_header_tree, 0, $x_keys, 'X',], [\$y_header_tree, 1, $y_keys, 'Y'])
     {
-        my ($pz_header_tree, $tuple_index, $z_keys) = @$tuple;
-        $$pz_header_tree = _build_header_tree([map { $_->[$tuple_index] } @$cell_tuples], scalar(@$z_keys));
+        my ($pz_header_tree, $tuple_index, $z_keys, $z) = @$tuple;
+
+        my $rows = [map { $_->[$tuple_index] } @$cell_tuples];
+
+        my $sorters = [map { $_->{'instance'} } @{$this->{$z . '_SORTS'}}];
+        if(@$sorters)
+        {
+            my $pairs = [];
+            for my $row (@$rows)
+            {
+                my $r = {};
+                for(my $i = 0; $i < @$z_keys; ++$i)
+                {
+                    Amling::R4P::Utils::set_path($r, $z_keys->[$i], $row->[$i]);
+                }
+                push @$pairs, [$row, $r];
+            }
+
+            my $cmp = sub
+            {
+                my $pair1 = shift;
+                my $pair2 = shift;
+                my $r1 = $pair1->[1];
+                my $r2 = $pair2->[1];
+
+                for my $sorter (@$sorters)
+                {
+                    my $r = $sorter->cmp($r1, $r2);
+                    return $r if($r != 0);
+                }
+
+                return 0;
+            };
+
+            $rows = [map { $_->[0] } sort { $cmp->($a, $b) } @$pairs];
+        }
+
+        $$pz_header_tree = _build_header_tree($rows, scalar(@$z_keys));
     }
 
     my $width = scalar(@$y_keys) + 1 + $x_header_tree->[4];
