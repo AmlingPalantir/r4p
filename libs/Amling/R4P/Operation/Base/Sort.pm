@@ -47,6 +47,8 @@ sub options
                         'instance' => $class->new($key),
                     };
                 }
+
+                return 1;
             }],
         );
     }

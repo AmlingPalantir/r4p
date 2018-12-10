@@ -84,6 +84,8 @@ sub options
             $spec->{'label'} = $label if($use_labels);
 
             push @$specs, $spec;
+
+            return 1;
         }],
     ];
 
@@ -109,6 +111,8 @@ sub options
                 $spec->{'label'} = $label if($use_labels);
 
                 push @$specs, $spec;
+
+                return 1;
             }],
         );
     }

@@ -57,6 +57,8 @@ sub options
 
             $this->{'WRAPPERS'} = $wrappers;
             $this->extra_args($files);
+
+            return 0;
         }],
 
         @{$this->SUPER::options()},

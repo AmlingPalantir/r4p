@@ -97,7 +97,7 @@ sub parse_options
     for my $tuple (@$options)
     {
         my ($aliases, $count, $target) = @$tuple;
-        $target = [$count, _convert_target($count, $target)];
+        $target = [1, $count, _convert_target($count, $target)];
 
         for my $alias (@$aliases)
         {
@@ -127,23 +127,34 @@ sub parse_options
         }
         else
         {
-            $target = shift @$catchalls;
+            for my $catchall (@$catchalls)
+            {
+                if($catchall->[0])
+                {
+                    $target = $catchall;
+                    last;
+                }
+            }
             if(!defined($target))
             {
                 die "Unknown option: $arg";
             }
         }
 
-        my $argct = $target->[0];
+        die "Unexpected repeat at $arg" unless($target->[0]);
+
+        my $argct = $target->[1];
+        my @args1;
         if(defined($argct))
         {
             die "Not enough arguments left at $arg" if($argct > @$args);
-            $target->[1]->(splice @$args, 0, $argct);
+            @args1 = splice @$args, 0, $argct;
         }
         else
         {
-            $target->[1]->(splice @$args, 0);
+            @args1 = splice @$args, 0;
         }
+        $target->[0] = $target->[2]->(@args1);
     }
 }
 
@@ -156,11 +167,11 @@ sub _convert_target
     {
         if(defined($count) && $count == 0)
         {
-            return sub { $$target = 1; };
+            return sub { $$target = 1; return 0; };
         }
         if(defined($count) && $count == 1)
         {
-            return sub { $$target = shift; };
+            return sub { $$target = shift; return 0; };
         }
         die 'Nonsense count for scalar option';
     }
@@ -171,14 +182,14 @@ sub _convert_target
         {
             die 'Count 0 with array option makes no sense';
         }
-        return sub { push @$target, @_; };
+        return sub { push @$target, @_; return 1; };
     }
 
     if(ref($target) eq 'HASH')
     {
         if(defined($count) && $count == 2)
         {
-            return sub { $target->{$_[0]} = $_[1]; };
+            return sub { $target->{$_[0]} = $_[1]; return 1; };
         }
     }
 

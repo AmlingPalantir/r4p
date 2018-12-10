@@ -38,6 +38,8 @@ sub options
                     'instance' => Amling::R4P::Clumper::Key->new($key),
                 };
             }
+
+            return 1;
         }],
     ];
 }
