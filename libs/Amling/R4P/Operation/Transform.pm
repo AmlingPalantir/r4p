@@ -14,7 +14,7 @@ sub new
 
     my $this = $class->SUPER::new(
         'INPUT' => 'RECORDS',
-        'RETURN' => 'r',
+        'RETURN' => 1,
         'OUTPUT' => 'RECORDS',
     );
 

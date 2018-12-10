@@ -14,7 +14,7 @@ sub new
 
     my $this = $class->SUPER::new(
         'INPUT' => 'RECORDS',
-        'RETURN' => undef,
+        'RETURN' => 0,
         'OUTPUT' => 'LINES',
     );
 

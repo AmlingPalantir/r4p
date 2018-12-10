@@ -48,8 +48,8 @@ sub options
         [['input-lines'], 0, sub { $this->{'INPUT'} = 'LINES'; return 0; }],
         [['input-records'], 0, sub { $this->{'INPUT'} = 'RECORDS'; return 0; }],
 
-        [['return'], 1, sub { $this->{'RETURN'} = $_[0]; return 0; }],
-        [['no-return'], 0, sub { $this->{'RETURN'} = undef; return 0; }],
+        [['return'], 0, sub { $this->{'RETURN'} = 1; return 0; }],
+        [['no-return'], 0, sub { $this->{'RETURN'} = 0; return 0; }],
 
         [['output-lines'], 0, sub { $this->{'OUTPUT'} = 'LINES'; return 0; }],
         [['output-records'], 0, sub { $this->{'OUTPUT'} = 'RECORDS'; return 0; }],
@@ -86,7 +86,7 @@ sub validate
     my $sub_supplier = sub
     {
         my $pkg = $executor->make_pkg();
-        return $executor->compile($pkg, [$input_variable], $code, $this->{'RETURN'});
+        return $executor->compile($pkg, [$input_variable], $code, ($this->{'RETURN'} ? $input_variable : undef));
     };
     if($this->{'SEPARATE'})
     {
