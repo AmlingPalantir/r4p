@@ -1,7 +1,7 @@
 canonical output order?
     several distinct JSON objects and no obvious way to pass down flag from r4p-main
     could wrap $fr into global context object that has it...
-to-ptable: --sort --x --y --v --p
+to-ptable: --sort
 exit code?
     only really applicable to grep
 executor: -A / -B / -C, --pre / --post

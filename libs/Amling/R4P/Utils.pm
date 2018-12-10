@@ -174,6 +174,14 @@ sub _convert_target
         return sub { push @$target, @_; };
     }
 
+    if(ref($target) eq 'HASH')
+    {
+        if(defined($count) && $count == 2)
+        {
+            return sub { $target->{$_[0]} = $_[1]; };
+        }
+    }
+
     if(ref($target) eq 'CODE')
     {
         return $target;
