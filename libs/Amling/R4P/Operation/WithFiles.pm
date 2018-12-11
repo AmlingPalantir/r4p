@@ -5,7 +5,7 @@ use warnings;
 
 use Amling::R4P::Operation::Base::WithSubOperation;
 use Amling::R4P::OrderedSubstreams;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::OutputStream::SubsTransform;
 use Amling::R4P::Utils;
 
@@ -78,32 +78,32 @@ sub wrap_stream
         $cur_os1 = $os1;
     };
 
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_BOF' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $substreams,
+        'BOF' => sub
         {
             my $file = shift;
 
             $close_os1->();
             $open_os1->($file);
         },
-        'WRITE_RECORD' => sub
-        {
-            my $r = shift;
-
-            $open_os1->(undef);
-            $cur_os1->write_record($r);
-        },
-        'WRITE_LINE' => sub
+        'LINE' => sub
         {
             my $line = shift;
 
             $open_os1->(undef);
             $cur_os1->write_line($line);
         },
+        'RECORD' => sub
+        {
+            my $r = shift;
+
+            $open_os1->(undef);
+            $cur_os1->write_record($r);
+        },
         'CLOSE' => sub
         {
             $close_os1->();
-            $substreams->close();
         },
     );
 }

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::TwoRecordUnion;
 use Amling::R4P::Utils;
 use Clone ('clone');
@@ -107,8 +107,11 @@ sub wrap_stream
     my $rhs_keys = $this->{'RHS_KEYS'};
     my $db = $this->{'DB'};
 
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_RECORD' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $os,
+        'BOF' => 'DROP',
+        'LINE' => 'DECODE',
+        'RECORD' => sub
         {
             my $r1 = shift;
 
@@ -139,8 +142,7 @@ sub wrap_stream
             {
                 _fill_right($os, $tru, $db, scalar(@$rhs_keys));
             }
-            $os->close();
-        }
+        },
     );
 }
 

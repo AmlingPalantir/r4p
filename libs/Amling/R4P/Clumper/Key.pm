@@ -3,7 +3,7 @@ package Amling::R4P::Clumper::Key;
 use strict;
 use warnings;
 
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::UnorderedSubstreams;
 use Amling::R4P::Utils;
 
@@ -38,8 +38,11 @@ sub wrap_stream
 
     my $substreams = Amling::R4P::UnorderedSubstreams->new($os);
 
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_RECORD' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $substreams,
+        'BOF' => 'DROP',
+        'LINE' => 'DECODE',
+        'RECORD' => sub
         {
             my $r = shift;
 
@@ -60,7 +63,6 @@ sub wrap_stream
             {
                 $bucket_stream->close();
             }
-            $substreams->close();
         },
     );
 }

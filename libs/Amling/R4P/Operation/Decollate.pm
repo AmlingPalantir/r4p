@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::Registry;
 use Amling::R4P::Utils;
 use Clone ('clone');
@@ -58,8 +58,11 @@ sub _wrap1
 
     my $instance = $spec->{'instance'};
 
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_RECORD' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $os,
+        'BOF' => 'PASS',
+        'LINE' => 'DECODE',
+        'RECORD' => sub
         {
             my $r = shift;
 
@@ -86,10 +89,6 @@ sub _wrap1
                 $os->write_record($r2);
             }
         },
-        'CLOSE' => sub
-        {
-            $os->close();
-        }
     );
 }
 

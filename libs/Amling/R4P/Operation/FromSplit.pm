@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::Utils;
 
 use base ('Amling::R4P::Operation');
@@ -44,8 +44,10 @@ sub wrap_stream
     my $regex = $this->{'REGEX'};
     my $keys = $this->{'KEYS'};
 
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_LINE' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $os,
+        'BOF' => 'PASS',
+        'LINE' => sub
         {
             my $line = shift;
 
@@ -57,10 +59,7 @@ sub wrap_stream
             }
             $os->write_record($r);
         },
-        'CLOSE' => sub
-        {
-            $os->close();
-        }
+        'RECORD' => 'ENCODE',
     );
 }
 

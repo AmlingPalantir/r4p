@@ -3,7 +3,7 @@ package Amling::R4P::UnorderedSubstreams;
 use strict;
 use warnings;
 
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 
 sub new
 {
@@ -27,27 +27,32 @@ sub next
 
     ++$this->{'OPEN'};
 
-    return Amling::R4P::OutputStream::Subs->new(
+    return Amling::R4P::OutputStream::Hard->new(
         'WRITE_BOF' => sub
         {
+            my $this1 = shift;
             my $file = shift;
 
             $this->{'DELEGATE'}->write_bof($file);
         },
         'WRITE_LINE' => sub
         {
+            my $this1 = shift;
             my $line = shift;
 
             $this->{'DELEGATE'}->write_line($line);
         },
         'WRITE_RECORD' => sub
         {
+            my $this1 = shift;
             my $r = shift;
 
             $this->{'DELEGATE'}->write_record($r);
         },
         'CLOSE' => sub
         {
+            my $this1 = shift;
+
             $this->close();
         },
     );

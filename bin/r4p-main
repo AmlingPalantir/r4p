@@ -25,7 +25,7 @@ use lib "$FindBin::RealBin/../libs";
 
 use Amling::R4P::Ferrier;
 use Amling::R4P::OutputStream::Console;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::Registry;
 use Amling::R4P::Utils;
 
@@ -51,27 +51,18 @@ else
     {
         open(my $fh, '<', $file) || die "Could not open $file: $!";
         my $os1 = $substreams->next();
-        $os1->write_bof($file);
-        my $os2 = Amling::R4P::OutputStream::Subs->new(
-            'WRITE_LINE' => sub
-            {
-                my $line = shift;
-
-                $os1->write_line($line);
-            },
-            'WRITE_RECORD' => sub
-            {
-                my $r = shift;
-
-                $os1->write_record($r);
-            },
+        $os1 = Amling::R4P::OutputStream::Easy->new(
+            $os1,
+            'BOF' => 'PASS',
+            'LINE' => 'PASS',
+            'RECORD' => 'PASS',
             'CLOSE' => sub
             {
                 close($fh) || die "Could not open $file: $!";
-                $os1->close();
             },
         );
-        $fr->register_read(undef, $fh, $os2);
+        $os1->write_bof($file);
+        $fr->register_read(undef, $fh, $os1);
     }
     $substreams->close();
 }

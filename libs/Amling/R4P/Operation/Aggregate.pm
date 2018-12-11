@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::Registry;
 use Amling::R4P::Utils;
 use Clone ('clone');
@@ -74,8 +74,11 @@ sub wrap_stream
         $os->write_record($r);
     };
 
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_RECORD' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $os,
+        'BOF' => 'DROP',
+        'LINE' => 'DECODE',
+        'RECORD' => sub
         {
             my $r = shift;
 
@@ -91,7 +94,6 @@ sub wrap_stream
         'CLOSE' => sub
         {
             $output_record->(0) unless($incremental);
-            $os->close();
         },
     );
 }

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation::Base::Sort;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 
 use base ('Amling::R4P::Operation::Base::Sort');
 
@@ -15,8 +15,11 @@ sub wrap_stream
     my $fr = shift;
 
     my $rs = [];
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_RECORD' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $os,
+        'BOF' => 'DROP',
+        'LINE' => 'DECODE',
+        'RECORD' => sub
         {
             my $r = shift;
 
@@ -28,8 +31,7 @@ sub wrap_stream
             {
                 $os->write_record($r);
             }
-            $os->close();
-        }
+        },
     );
 }
 

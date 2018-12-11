@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::Utils;
 use Clone ('clone');
 
@@ -91,8 +91,21 @@ sub wrap_stream
         }
         $r = $r2;
     };
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_LINE' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $os,
+        'BOF' => sub
+        {
+            my $file = shift;
+
+            if(!$clobber)
+            {
+                $flush->();
+            }
+            $r = {};
+
+            $os->write_bof($file);
+        },
+        'LINE' => sub
         {
             my $line = shift;
 
@@ -128,14 +141,14 @@ sub wrap_stream
                 }
             }
         },
+        'RECORD' => 'ENCODE',
         'CLOSE' => sub
         {
             if(!$clobber)
             {
                 $flush->();
             }
-            $os->close();
-        }
+        },
     );
 }
 

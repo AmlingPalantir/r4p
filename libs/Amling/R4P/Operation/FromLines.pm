@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 
 use base ('Amling::R4P::Operation');
 
@@ -48,15 +48,18 @@ sub wrap_stream
     my $cur_file = undef;
     my $cur_lineno = 1;
 
-    return Amling::R4P::OutputStream::Subs->new(
-        'WRITE_BOF' => sub
+    return Amling::R4P::OutputStream::Easy->new(
+        $os,
+        'BOF' => sub
         {
             my $file = shift;
 
             $cur_file = $file;
             $cur_lineno = 1;
+
+            $os->write_bof($file);
         },
-        'WRITE_LINE' => sub
+        'LINE' => sub
         {
             my $line = shift;
 
@@ -68,10 +71,7 @@ sub wrap_stream
             };
             $os->write_record($r);
         },
-        'CLOSE' => sub
-        {
-            $os->close();
-        }
+        'RECORD' => 'ENCODE',
     );
 }
 

@@ -3,7 +3,7 @@ package Amling::R4P::OrderedSubstreams;
 use strict;
 use warnings;
 
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 
 # This hideous mess is necessary because places need to make multiple
 # substreams which are ordered ordered (specifically have their output
@@ -84,9 +84,10 @@ sub next
     my $buffer = [];
     push @{$this->{'BUFFERS'}}, $buffer;
 
-    return Amling::R4P::OutputStream::Subs->new(
+    return Amling::R4P::OutputStream::Hard->new(
         'WRITE_BOF' => sub
         {
+            my $this1 = shift;
             my $file = shift;
 
             push @$buffer, ['BOF', $file];
@@ -94,6 +95,7 @@ sub next
         },
         'WRITE_LINE' => sub
         {
+            my $this1 = shift;
             my $line = shift;
 
             push @$buffer, ['LINE', $line];
@@ -101,6 +103,7 @@ sub next
         },
         'WRITE_RECORD' => sub
         {
+            my $this1 = shift;
             my $r = shift;
 
             push @$buffer, ['RECORD', $r];
@@ -108,6 +111,8 @@ sub next
         },
         'CLOSE' => sub
         {
+            my $this1 = shift;
+
             push @$buffer, ['CLOSE'];
             $this->_ferry();
         },

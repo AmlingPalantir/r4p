@@ -5,7 +5,7 @@ use warnings;
 
 use Amling::R4P::Executor;
 use Amling::R4P::Operation;
-use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::Utils;
 
 use base ('Amling::R4P::Operation');
@@ -94,18 +94,16 @@ sub wrap_stream
 
     my $sub = $this->{'SUB_SUPPLIER'}->();
     my $invert = $this->{'INVERT'};
-
-    my $input_event;
-    my $pass_sub;
     my $input = $this->{'INPUT'};
+    my $output = $this->{'OUTPUT'};
+
+    my $pass_sub;
     if($input eq 'LINES')
     {
-        $input_event = 'WRITE_LINE';
         $pass_sub = sub { $os->write_line($_[0]); };
     }
     elsif($input eq 'RECORDS')
     {
-        $input_event = 'WRITE_RECORD';
         $pass_sub = sub { $os->write_record($_[0]); };
     }
     else
@@ -114,7 +112,6 @@ sub wrap_stream
     }
 
     my $output_sub;
-    my $output = $this->{'OUTPUT'};
     if($output eq 'LINES')
     {
         $output_sub = sub
@@ -154,20 +151,42 @@ sub wrap_stream
         die;
     }
 
-    return Amling::R4P::OutputStream::Subs->new(
-        $input_event => sub
-        {
-            my $vi = shift;
+    my $input_sub = sub
+    {
+        my $vi = shift;
 
-            my $vo = $sub->($vi);
-            $vo = !$vo if($invert);
+        my $vo = $sub->($vi);
+        $vo = !$vo if($invert);
 
-            $output_sub->($vi, $vo);
-        },
-        'CLOSE' => sub
-        {
-            $os->close();
-        }
+        $output_sub->($vi, $vo);
+    };
+
+    my $input_events;
+    if($input eq 'LINES')
+    {
+        $input_events =
+        [
+            'LINE' => $input_sub,
+            'RECORD' => 'ENCODE',
+        ];
+    }
+    elsif($input eq 'RECORDS')
+    {
+        $input_events =
+        [
+            'LINE' => 'DECODE',
+            'RECORD' => $input_sub,
+        ];
+    }
+    else
+    {
+        die;
+    }
+
+    return Amling::R4P::OutputStream::Easy->new(
+        $os,
+        'BOF' => 'PASS',
+        @$input_events,
     );
 }
 
