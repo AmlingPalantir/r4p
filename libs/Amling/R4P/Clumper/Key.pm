@@ -3,8 +3,8 @@ package Amling::R4P::Clumper::Key;
 use strict;
 use warnings;
 
-use Amling::R4P::OutputStream::RefuseClose;
 use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::UnorderedSubstreams;
 use Amling::R4P::Utils;
 
 sub new
@@ -36,7 +36,7 @@ sub wrap_stream
     my $key = $this->{'KEY'};
     my $bucket_streams = {};
 
-    my $os_no_close = Amling::R4P::OutputStream::RefuseClose->new($os);
+    my $substreams = Amling::R4P::UnorderedSubstreams->new($os);
 
     return Amling::R4P::OutputStream::Subs->new(
         'WRITE_RECORD' => sub
@@ -47,7 +47,9 @@ sub wrap_stream
             my $bucket_stream = $bucket_streams->{$value};
             if(!defined($bucket_stream))
             {
-                $bucket_stream = $bucket_streams->{$value} = $bucket_wrapper->($os_no_close, [[$key, $value]]);
+                $bucket_stream = $substreams->next();
+                $bucket_stream = $bucket_wrapper->($bucket_stream, [[$key, $value]]);
+                $bucket_streams->{$value} = $bucket_stream;
             }
 
             $bucket_stream->write_record($r);
@@ -58,7 +60,7 @@ sub wrap_stream
             {
                 $bucket_stream->close();
             }
-            $os->close();
+            $substreams->close();
         },
     );
 }
