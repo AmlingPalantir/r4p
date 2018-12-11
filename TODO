@@ -14,3 +14,4 @@ chain
         this is "legit" and should dump [inner] output forever
             obviously no one will write that, but the possible deadlock is real
         although I have no idea how to make backpressure work here (so we don't spool [outer] output forever)
+    maybe add is_blocked to OutputStream?  most instances have a next they could defer to and then Process can write into a buffer in memory which is ferried when it can be and it is_blocked based on buffer size
