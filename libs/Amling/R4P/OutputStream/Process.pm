@@ -11,6 +11,8 @@ use base ('Amling::R4P::OutputStream::Lines');
 sub new
 {
     my $class = shift;
+    my $os = shift;
+    my $fr = shift;
     my $cmd = shift;
 
     my $this = $class->SUPER::new();
@@ -19,25 +21,11 @@ sub new
     my $out;
     my $pid = open2($in, $out, 'env', @$cmd);
 
-    $this->{'IN'} = $in;
     $this->{'OUT'} = $out;
-    $this->{'PID'} = $pid;
+
+    $fr->register($pid, $in, $os);
 
     return $this;
-}
-
-sub in
-{
-    my $this = shift;
-
-    return $this->{'IN'};
-}
-
-sub pid
-{
-    my $this = shift;
-
-    return $this->{'PID'};
 }
 
 sub write_line
