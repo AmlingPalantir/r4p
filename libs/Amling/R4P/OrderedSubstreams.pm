@@ -47,6 +47,12 @@ sub _ferry
                 return;
             }
             my ($type, @rest) = @$e;
+            if($type eq 'BOF')
+            {
+                my ($file) = @rest;
+                $delegate->write_bof($file);
+                next ELEMENT;
+            }
             if($type eq 'LINE')
             {
                 my ($line) = @rest;
@@ -79,6 +85,13 @@ sub next
     push @{$this->{'BUFFERS'}}, $buffer;
 
     return Amling::R4P::OutputStream::Subs->new(
+        'WRITE_BOF' => sub
+        {
+            my $file = shift;
+
+            push @$buffer, ['BOF', $file];
+            $this->_ferry();
+        },
         'WRITE_LINE' => sub
         {
             my $line = shift;
