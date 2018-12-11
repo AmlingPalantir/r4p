@@ -36,7 +36,7 @@ sub wrap_stream
     my $size = $this->{'SIZE'};
     my $window = [];
 
-    my $ordered_streams = Amling::R4P::OrderedSubstreams->new($os);
+    my $substreams = Amling::R4P::OrderedSubstreams->new($os);
 
     return Amling::R4P::OutputStream::Subs->new(
         'WRITE_RECORD' => sub
@@ -50,7 +50,7 @@ sub wrap_stream
             }
             if(@$window == $size)
             {
-                my $os1 = $ordered_streams->next();
+                my $os1 = $substreams->next();
                 $os1 = $bucket_wrapper->($os1, []);
                 for my $r (@$window)
                 {
@@ -64,7 +64,7 @@ sub wrap_stream
         },
         'CLOSE' => sub
         {
-            $ordered_streams->close();
+            $substreams->close();
         },
     );
 }

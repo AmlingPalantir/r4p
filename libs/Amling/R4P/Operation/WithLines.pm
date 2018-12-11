@@ -47,7 +47,7 @@ sub wrap_stream
     my $tru = $this->{'TRU'};
     my $line_key = $this->{'LINE_KEY'};
 
-    my $ordered_streams = Amling::R4P::OrderedSubstreams->new($os);
+    my $substreams = Amling::R4P::OrderedSubstreams->new($os);
 
     return Amling::R4P::OutputStream::Subs->new(
         'WRITE_RECORD' => sub
@@ -56,7 +56,7 @@ sub wrap_stream
 
             my $line = Amling::R4P::Utils::get_path($r1, $line_key);
 
-            my $os1 = $ordered_streams->next();
+            my $os1 = $substreams->next();
             # Note that we pass lines as-is (rather than trying to parse as
             # JSON and joining).  Unclear if this is useful...
             $os1 = Amling::R4P::OutputStream::SubsTransform->new(
@@ -74,7 +74,7 @@ sub wrap_stream
         },
         'CLOSE' => sub
         {
-            $ordered_streams->close();
+            $substreams->close();
         },
     );
 }

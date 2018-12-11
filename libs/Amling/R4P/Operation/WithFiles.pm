@@ -42,7 +42,7 @@ sub wrap_stream
 
     my $file_key = $this->{'FILE_KEY'};
 
-    my $ordered_streams = Amling::R4P::OrderedSubstreams->new($os);
+    my $substreams = Amling::R4P::OrderedSubstreams->new($os);
     my $cur_os1 = undef;
     my $cur_file = undef;
 
@@ -59,7 +59,7 @@ sub wrap_stream
 
         return if($cur_os1);
 
-        my $os1 = $ordered_streams->next();
+        my $os1 = $substreams->next();
         # Note that we pass lines as-is (rather than trying to parse as JSON
         # and stamping).  Unclear if this is useful...
         $os1 = Amling::R4P::OutputStream::SubsTransform->new(
@@ -103,7 +103,7 @@ sub wrap_stream
         'CLOSE' => sub
         {
             $close_os1->();
-            $ordered_streams->close();
+            $substreams->close();
         },
     );
 }
