@@ -4,6 +4,9 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation;
+use Amling::R4P::OutputStream::Subs;
+use Amling::R4P::Registry;
+use Amling::R4P::Utils;
 
 use base ('Amling::R4P::Operation');
 

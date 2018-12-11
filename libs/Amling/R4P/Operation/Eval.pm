@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation::Base::Eval;
-use Amling::R4P::Utils;
 
 use base ('Amling::R4P::Operation::Base::Eval');
 
