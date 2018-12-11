@@ -23,7 +23,7 @@ sub new
 
     $this->{'OUT'} = $out;
 
-    $fr->register($pid, $in, $os);
+    $fr->register_read($pid, $in, $os);
 
     return $this;
 }

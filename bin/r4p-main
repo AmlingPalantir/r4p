@@ -40,7 +40,7 @@ $os = $op->wrap_stream($os, $fr);
 if(!@$files)
 {
     $os->write_bof('-');
-    $fr->register(undef, \*STDIN, $os);
+    $fr->register_read(undef, \*STDIN, $os);
 }
 else
 {
@@ -77,7 +77,7 @@ else
                 $reregister->($reregister);
             },
         );
-        $fr->register(undef, $fh, $os1);
+        $fr->register_read(undef, $fh, $os1);
     };
     $reregister->($reregister);
 }

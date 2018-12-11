@@ -17,7 +17,7 @@ sub new
     return $this;
 }
 
-sub register
+sub register_read
 {
     my $this = shift;
     my $pid = shift;
