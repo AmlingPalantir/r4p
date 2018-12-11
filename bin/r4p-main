@@ -25,6 +25,7 @@ use lib "$FindBin::RealBin/../libs";
 
 use Amling::R4P::Ferrier;
 use Amling::R4P::OutputStream::Console;
+use Amling::R4P::OutputStream::Subs;
 use Amling::R4P::Registry;
 use Amling::R4P::Utils;
 
@@ -44,41 +45,34 @@ if(!@$files)
 }
 else
 {
-    my $reregister = sub
+    my $ordered_streams = Amling::R4P::OrderedSubstreams->new($os);
+
+    for my $file (@$files)
     {
-        my $reregister = shift;
-
-        my $file = shift @$files;
-
-        if(!defined($file))
-        {
-            $os->close();
-            return;
-        }
-
-        $os->write_bof($file);
         open(my $fh, '<', $file) || die "Could not open $file: $!";
-        my $os1 = Amling::R4P::OutputStream::Subs->new(
+        my $os1 = $ordered_streams->next();
+        $os1->write_bof($file);
+        my $os2 = Amling::R4P::OutputStream::Subs->new(
             'WRITE_LINE' => sub
             {
                 my $line = shift;
 
-                $os->write_line($line);
+                $os1->write_line($line);
             },
             'WRITE_RECORD' => sub
             {
                 my $r = shift;
 
-                $os->write_record($r);
+                $os1->write_record($r);
             },
             'CLOSE' => sub
             {
                 close($fh) || die "Could not open $file: $!";
-                $reregister->($reregister);
+                $os1->close();
             },
         );
-        $fr->register_read(undef, $fh, $os1);
-    };
-    $reregister->($reregister);
+        $fr->register_read(undef, $fh, $os2);
+    }
+    $ordered_streams->close();
 }
 $fr->ferry();
