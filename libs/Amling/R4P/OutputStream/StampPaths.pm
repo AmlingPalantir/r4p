@@ -3,10 +3,10 @@ package Amling::R4P::OutputStream::StampPaths;
 use strict;
 use warnings;
 
-use Amling::R4P::OutputStream::Forwarding;
+use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::Utils;
 
-use base ('Amling::R4P::OutputStream::Forwarding');
+use base ('Amling::R4P::OutputStream::Easy');
 
 sub new
 {
@@ -14,28 +14,24 @@ sub new
     my $os = shift;
     my $pairs = shift;
 
-    my $this = $class->SUPER::new($os);
+    return $class->SUPER::new(
+        $os,
+        'BOF' => 'PASS',
+        'LINE' => 'PASS',
+        'RECORD' => sub
+        {
+            my $r = shift;
 
-    $this->{'PAIRS'} = $pairs;
+            for my $pair (@$pairs)
+            {
+                my ($path, $value) = @$pair;
 
-    return $this;
-}
+                Amling::R4P::Utils::set_path($r, $path, $value);
+            }
 
-sub write_record
-{
-    my $this = shift;
-    my $r = shift;
-
-    my $pairs = $this->{'PAIRS'};
-
-    for my $pair (@$pairs)
-    {
-        my ($path, $value) = @$pair;
-
-        Amling::R4P::Utils::set_path($r, $path, $value);
-    }
-
-    return $this->SUPER::write_record($r);
+            return $os->write_record($r);
+        },
+    );
 }
 
 1;
