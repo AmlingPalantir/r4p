@@ -8,4 +8,9 @@ executor: -A / -B / -C, --pre / --post
 help
 tests
 from-csv (once)
-chain: uh, oh, SIGPIPE from middle process closing input (e.g.  `head -n 1`)
+chain
+    uh, oh, SIGPIPE from middle process closing input (e.g.  `head -n 1`)
+    uh, oh, blocked write, e.g. something gross like `yes | r4p-chain yes`
+        this is "legit" and should dump [inner] output forever
+            obviously no one will write that, but the possible deadlock is real
+        although I have no idea how to make backpressure work here (so we don't spool [outer] output forever)
