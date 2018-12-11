@@ -8,3 +8,4 @@ executor: -A / -B / -C, --pre / --post
 help
 tests
 from-csv (once)
+chain: uh, oh, SIGPIPE from middle process closing input (e.g.  `head -n 1`)
