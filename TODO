@@ -15,3 +15,6 @@ chain
             obviously no one will write that, but the possible deadlock is real
         although I have no idea how to make backpressure work here (so we don't spool [outer] output forever)
     maybe add is_blocked to OutputStream?  most instances have a next they could defer to and then Process can write into a buffer in memory which is ferried when it can be and it is_blocked based on buffer size
+
+bof uncertain?
+    not 100% clear it's desirable for things to act on it (window/multire) since it changes behaviour weirdly between chain and actual pipes
