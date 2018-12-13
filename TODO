@@ -8,12 +8,3 @@ executor: -A / -B / -C, --pre / --post
 help
 tests
 from-csv (once)
-
-bof uncertain?
-    not 100% clear it's desirable for things to act on it (window/multire) since it changes behaviour weirdly between chain and actual pipes
-        could actually be a chain option, default to clear BOF between operations?
-    current actual uses:
-        window clumper clears window
-        from-lines sets FILE
-        from-multire clears state
-        with-files sets FILE

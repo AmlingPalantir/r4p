@@ -5,8 +5,20 @@ use warnings;
 
 use Amling::R4P::Operation::Base::WithSubOperation;
 use Amling::R4P::Operation;
+use Amling::R4P::OutputStream::Easy;
 
 use base ('Amling::R4P::Operation');
+
+sub new
+{
+    my $class = shift;
+
+    my $this = $class->SUPER::new();
+
+    $this->{'KEEP_BOF'} = 0;
+
+    return $this;
+}
 
 sub options
 {
@@ -61,6 +73,8 @@ sub options
             return 0;
         }],
 
+        [['keep-bof'], 0, \$this->{'KEEP_BOF'}],
+
         @{$this->SUPER::options()},
     ];
 }
@@ -81,6 +95,15 @@ sub wrap_stream
 
     for my $wrapper (reverse(@{$this->{'WRAPPERS'}}))
     {
+        if(!$this->{'KEEP_BOF'})
+        {
+            $os = Amling::R4P::OutputStream::Easy->new(
+                $os,
+                'BOF' => 'DROP',
+                'LINE' => 'PASS',
+                'RECORD' => 'PASS',
+            );
+        }
         $os = $wrapper->($os);
     }
 
