@@ -98,6 +98,10 @@ sub new
         $preclose->();
         $delegate->close();
     };
+    $args2{'RCLOSED'} = sub
+    {
+        return $delegate->rclosed();
+    };
 
     my $this = $class->SUPER::new(%args2);
 

@@ -10,7 +10,7 @@ sub new
 
     my $this = {};
 
-    for my $k ('WRITE_BOF', 'WRITE_RECORD', 'WRITE_LINE', 'CLOSE')
+    for my $k ('WRITE_BOF', 'WRITE_RECORD', 'WRITE_LINE', 'CLOSE', 'RCLOSED')
     {
         $this->{$k} = delete $args{$k} || die "No $k specified?";
     }
@@ -38,6 +38,11 @@ sub write_record
 sub close
 {
     return $_[0]->{'CLOSE'}->(@_);
+}
+
+sub rclosed
+{
+    return $_[0]->{'RCLOSED'}->(@_);
 }
 
 1;

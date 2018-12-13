@@ -169,4 +169,11 @@ sub ferry
     }
 }
 
+sub rclosed
+{
+    my $this = shift;
+
+    return !defined($this->{'OUT'});
+}
+
 1;

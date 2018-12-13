@@ -42,4 +42,10 @@ sub close
 {
 }
 
+sub rclosed
+{
+    # We "detect" reverse closure by letting the entire process die.
+    return 0;
+}
+
 1;

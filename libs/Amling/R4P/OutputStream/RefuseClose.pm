@@ -34,6 +34,10 @@ sub new
         'CLOSE' => sub
         {
         },
+        'RCLOSED' => sub
+        {
+            return $os->rclosed();
+        },
     );
 }
 
