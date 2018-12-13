@@ -60,8 +60,11 @@ sub close
     my $this = shift;
 
     my $out = $this->{'OUT'};
-    close($out);
-    $this->{'OUT'} = undef;
+    if(defined($out))
+    {
+        CORE::close($out);
+        $this->{'OUT'} = undef;
+    }
 
     $this->ferry('', 1);
 
@@ -80,6 +83,12 @@ sub ferry
     {
         my $in = $this->{'IN'};
         my $out = $this->{'OUT'};
+
+        if(defined($in) && $os->rclosed())
+        {
+            CORE::close($in);
+            $in = $this->{'IN'} = undef;
+        }
 
         my $hang = 0;
         my $vec_read = '';

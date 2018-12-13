@@ -44,11 +44,12 @@ if(!@$files)
     {
         chomp $line;
         $os->write_line($line);
+        last if($os->rclosed());
     }
 }
 else
 {
-    for my $file (@$files)
+    FILE: for my $file (@$files)
     {
         $os->write_bof($file);
         open(my $fh, '<', $file) || die "Could not open $file: $!";
@@ -56,6 +57,7 @@ else
         {
             chomp $line;
             $os->write_line($line);
+            last FILE if($os->rclosed());
         }
         close($fh) || die "Could not close $file: $!";
     }
