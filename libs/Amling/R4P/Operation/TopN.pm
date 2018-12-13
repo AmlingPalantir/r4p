@@ -35,7 +35,6 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     my $ct = $this->{'COUNT'};
 

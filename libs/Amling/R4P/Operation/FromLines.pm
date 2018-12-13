@@ -39,7 +39,6 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     my $line_key = $this->{'LINE_KEY'};
     my $lineno_key = $this->{'LINENO_KEY'};

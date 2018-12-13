@@ -42,7 +42,6 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     my $tru = $this->{'TRU'};
     my $line_key = $this->{'LINE_KEY'};
@@ -71,7 +70,7 @@ sub wrap_stream
                     return $tru->union(clone($r1), $r2);
                 },
             );
-            $os1 = $this->wrap_sub_stream($os1, $fr);
+            $os1 = $this->wrap_sub_stream($os1);
             $os1->write_line($line);
             $os1->close();
         },

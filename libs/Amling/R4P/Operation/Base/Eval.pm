@@ -90,7 +90,6 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     my $sub = $this->{'SUB_SUPPLIER'}->();
     my $invert = $this->{'INVERT'};

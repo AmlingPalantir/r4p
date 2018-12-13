@@ -100,7 +100,6 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     my $tru = $this->{'TRU'};
     my ($fill_left, $fill_right) = @{$this->{'FILLS'}};

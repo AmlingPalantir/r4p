@@ -23,7 +23,6 @@ use warnings;
 use FindBin ('$Script');
 use lib "$FindBin::RealBin/../libs";
 
-use Amling::R4P::Ferrier;
 use Amling::R4P::OutputStream::Console;
 use Amling::R4P::OutputStream::Easy;
 use Amling::R4P::Registry;
@@ -35,35 +34,30 @@ my $op = Amling::R4P::Registry::find('Amling::R4P::Operation', $1);
 Amling::R4P::Utils::parse_options($op->options(), \@ARGV);
 my $files = $op->validate();
 
-my $fr = Amling::R4P::Ferrier->new();
 my $os = Amling::R4P::OutputStream::Console->new();
-$os = $op->wrap_stream($os, $fr);
+$os = $op->wrap_stream($os);
 if(!@$files)
 {
     $os->write_bof('-');
-    $fr->register_read(undef, \*STDIN, $os);
+    @ARGV = ();
+    while(my $line = <>)
+    {
+        chomp $line;
+        $os->write_line($line);
+    }
 }
 else
 {
-    my $substreams = Amling::R4P::OrderedSubstreams->new($os);
-
     for my $file (@$files)
     {
+        $os->write_bof($file);
         open(my $fh, '<', $file) || die "Could not open $file: $!";
-        my $os1 = $substreams->next();
-        $os1 = Amling::R4P::OutputStream::Easy->new(
-            $os1,
-            'BOF' => 'PASS',
-            'LINE' => 'PASS',
-            'RECORD' => 'PASS',
-            'CLOSE' => sub
-            {
-                close($fh) || die "Could not open $file: $!";
-            },
-        );
-        $os1->write_bof($file);
-        $fr->register_read(undef, $fh, $os1);
+        while(my $line = <$fh>)
+        {
+            chomp $line;
+            $os->write_line($line);
+        }
+        close($fh) || die "Could not close $file: $!";
     }
-    $substreams->close();
 }
-$fr->ferry();
+$os->close();

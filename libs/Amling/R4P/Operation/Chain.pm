@@ -78,11 +78,10 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     for my $wrapper (reverse(@{$this->{'WRAPPERS'}}))
     {
-        $os = $wrapper->($os, $fr);
+        $os = $wrapper->($os);
     }
 
     return $os;

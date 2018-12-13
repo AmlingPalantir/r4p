@@ -47,7 +47,6 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     my $regex = $this->{'REGEX'};
     my $keys = $this->{'KEYS'};

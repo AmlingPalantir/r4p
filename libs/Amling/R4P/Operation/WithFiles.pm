@@ -38,7 +38,6 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     my $file_key = $this->{'FILE_KEY'};
 
@@ -73,7 +72,7 @@ sub wrap_stream
                 return $r;
             },
         );
-        $os1 = $this->wrap_sub_stream($os1, $fr);
+        $os1 = $this->wrap_sub_stream($os1);
 
         $cur_os1 = $os1;
     };

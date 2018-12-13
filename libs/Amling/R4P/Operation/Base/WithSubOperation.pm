@@ -54,9 +54,8 @@ sub wrap_sub_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
-    return $this->{'WRAPPER'}->($os, $fr);
+    return $this->{'WRAPPER'}->($os);
 }
 
 sub construct_wrapper
@@ -77,9 +76,8 @@ sub construct_wrapper
         my $wrapper = sub
         {
             my $os = shift;
-            my $fr = shift;
 
-            return $op->wrap_stream($os, $fr);
+            return $op->wrap_stream($os);
         };
 
         return [$wrapper, $files];
@@ -88,7 +86,6 @@ sub construct_wrapper
     my $wrapper = sub
     {
         my $os = shift;
-        my $fr = shift;
 
         return Amling::R4P::OutputStream::Process->new($os, $cmd);
     };

@@ -36,7 +36,6 @@ sub wrap_stream
 {
     my $this = shift;
     my $os = shift;
-    my $fr = shift;
 
     return $this->{'CLUMP'}->wrap_stream($os, sub
     {
@@ -44,7 +43,7 @@ sub wrap_stream
         my $bucket_pairs = shift;
 
         $os = Amling::R4P::OutputStream::StampPaths->new($os, $bucket_pairs);
-        $os = $this->SUPER::wrap_stream($os, $fr);
+        $os = $this->SUPER::wrap_stream($os);
 
         return $os;
     });
