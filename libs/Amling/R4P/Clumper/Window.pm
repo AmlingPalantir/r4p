@@ -40,7 +40,13 @@ sub wrap_stream
 
     return Amling::R4P::OutputStream::Easy->new(
         $os,
-        'BOF' => 'DROP',
+        'BOF' => sub
+        {
+            my $file = shift;
+
+            $window = [];
+            $os->write_bof($file);
+        },
         'LINE' => 'DECODE',
         'RECORD' => sub
         {

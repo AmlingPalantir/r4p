@@ -73,6 +73,7 @@ sub wrap_stream
             },
         );
         $os1 = $this->wrap_sub_stream($os1);
+        $os1->write_bof($file) if(defined($file));
 
         $cur_os1 = $os1;
     };
