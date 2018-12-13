@@ -90,7 +90,7 @@ sub construct_wrapper
         my $os = shift;
         my $fr = shift;
 
-        return Amling::R4P::OutputStream::Process->new($os, $fr, $cmd);
+        return Amling::R4P::OutputStream::Process->new($os, $cmd);
     };
     # subprocess stages always get STDIN
     return [$wrapper, []];
