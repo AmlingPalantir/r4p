@@ -4,6 +4,9 @@ use strict;
 use warnings;
 
 use IPC::Open2;
+use JSON;
+
+my $json = JSON->new();
 
 sub new
 {
@@ -39,7 +42,7 @@ sub write_record
 
     return unless(defined($this->{'OUT'}));
 
-    return $this->SUPER::write_record($r);
+    $this->ferry($json->encode($r) . "\n", 0);
 }
 
 sub write_line
