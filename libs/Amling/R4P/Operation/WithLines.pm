@@ -4,8 +4,8 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation::Base::WithSubOperation;
-use Amling::R4P::OrderedSubstreams;
 use Amling::R4P::OutputStream::Easy;
+use Amling::R4P::OutputStream::RefuseClose;
 use Amling::R4P::OutputStream::SubsTransform;
 use Amling::R4P::TwoRecordUnion;
 use Amling::R4P::Utils;
@@ -46,10 +46,10 @@ sub wrap_stream
     my $tru = $this->{'TRU'};
     my $line_key = $this->{'LINE_KEY'};
 
-    my $substreams = Amling::R4P::OrderedSubstreams->new($os);
+    my $os_no_close = Amling::R4P::OutputStream::RefuseClose->new($os);
 
     return Amling::R4P::OutputStream::Easy->new(
-        $substreams,
+        $os,
         'BOF' => 'DROP',
         'LINE' => 'DECODE',
         'RECORD' => sub
@@ -58,11 +58,10 @@ sub wrap_stream
 
             my $line = Amling::R4P::Utils::get_path($r1, $line_key);
 
-            my $os1 = $substreams->next();
             # Note that we pass lines as-is (rather than trying to parse as
             # JSON and joining).  Unclear if this is useful...
-            $os1 = Amling::R4P::OutputStream::SubsTransform->new(
-                $os1,
+            my $os1 = Amling::R4P::OutputStream::SubsTransform->new(
+                $os_no_close,
                 'XFORM_RECORD' => sub
                 {
                     my $r2 = shift;

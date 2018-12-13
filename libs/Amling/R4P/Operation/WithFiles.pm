@@ -4,8 +4,8 @@ use strict;
 use warnings;
 
 use Amling::R4P::Operation::Base::WithSubOperation;
-use Amling::R4P::OrderedSubstreams;
 use Amling::R4P::OutputStream::Easy;
+use Amling::R4P::OutputStream::RefuseClose;
 use Amling::R4P::OutputStream::SubsTransform;
 use Amling::R4P::Utils;
 
@@ -41,9 +41,10 @@ sub wrap_stream
 
     my $file_key = $this->{'FILE_KEY'};
 
-    my $substreams = Amling::R4P::OrderedSubstreams->new($os);
     my $cur_os1 = undef;
     my $cur_file = undef;
+
+    my $os_no_close = Amling::R4P::OutputStream::RefuseClose->new($os);
 
     my $close_os1 = sub
     {
@@ -58,11 +59,10 @@ sub wrap_stream
 
         return if($cur_os1);
 
-        my $os1 = $substreams->next();
         # Note that we pass lines as-is (rather than trying to parse as JSON
         # and stamping).  Unclear if this is useful...
-        $os1 = Amling::R4P::OutputStream::SubsTransform->new(
-            $os1,
+        my $os1 = Amling::R4P::OutputStream::SubsTransform->new(
+            $os_no_close,
             'XFORM_RECORD' => sub
             {
                 my $r = shift;
@@ -78,7 +78,7 @@ sub wrap_stream
     };
 
     return Amling::R4P::OutputStream::Easy->new(
-        $substreams,
+        $os,
         'BOF' => sub
         {
             my $file = shift;
