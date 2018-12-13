@@ -87,6 +87,7 @@ sub ferry
         if(defined($in) && $os->rclosed())
         {
             CORE::close($in);
+            $os->close();
             $in = $this->{'IN'} = undef;
         }
 
