@@ -84,13 +84,6 @@ sub ferry
         my $in = $this->{'IN'};
         my $out = $this->{'OUT'};
 
-        if(defined($in) && $os->rclosed())
-        {
-            CORE::close($in);
-            $os->close();
-            $in = $this->{'IN'} = undef;
-        }
-
         my $hang = 0;
         my $vec_read = '';
         my $vec_write = '';
@@ -126,6 +119,7 @@ sub ferry
 
             my $chunk;
             my $len = sysread $in, $chunk, 1024;
+            my $closed = 0;
             if($len)
             {
                 $buf .= $chunk;
@@ -139,6 +133,12 @@ sub ferry
                         last;
                     }
                     $os->write_line(substr($buf, $start, ($i - $start)));
+                    if($os->rclosed())
+                    {
+                        $closed = 1;
+                        $buf = '';
+                        last;
+                    }
                     $start = $i + 1;
                 }
                 $this->{'BUF'} = $buf;
@@ -149,6 +149,11 @@ sub ferry
                 {
                     $os->write_line($buf);
                 }
+                $closed = 1;
+            }
+            if($closed)
+            {
+                CORE::close($in);
                 $os->close();
                 $this->{'IN'} = undef;
             }
