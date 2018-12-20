@@ -40,8 +40,6 @@ sub write_record
     my $this = shift;
     my $r = shift;
 
-    return unless(defined($this->{'OUT'}));
-
     $this->ferry($json->encode($r) . "\n", 0);
 }
 
@@ -49,8 +47,6 @@ sub write_line
 {
     my $this = shift;
     my $line = shift;
-
-    return unless(defined($this->{'OUT'}));
 
     $this->ferry("$line\n", 0);
 }
